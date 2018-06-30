@@ -7,7 +7,7 @@
                 <i class="fas fa-align-left"></i>
                 <span></span>
             </button>
-            --------------  FOOD TRUCK & BUSKING
+            <%= image_tag "foodtruck_logo.jpeg" ,height:"60px"%>
 
         </div>
     </nav>
@@ -29,15 +29,15 @@
                 
                 <% if user_signed_in?%>
                 <li>
-                  <%= link_to "로그아웃", destroy_user_session_path, method: :delete %>
+                  <%= link_to "로그아웃", destroy_user_session_path, method: :delete, style: "color: white; font-size: 2em;" %>
                 </li>
                 
                 <% else %>
                 <li>
-                    <%= link_to "로그인", new_user_session_path%>
+                    <%= link_to "로그인", new_user_session_path, style: "color: white; font-size: 2em;"%>
                 </li>
                 <li>
-                    <%= link_to "회원가입", new_user_registration_path %>
+                    <%= link_to "회원가입", new_user_registration_path , style: "color: white; font-size: 2em;"%>
                 </li>
               
                 <% end%>
@@ -116,8 +116,8 @@ $()
 
     </div>       
     
-    <div class="wrapper3">
-        <div class="info-by-date">
+    <div style="display: float; float: right; margin-right: 60px;">
+        <div class="info-by-date" style="padding:20px; opicity:20;" >
             
         </div>
         

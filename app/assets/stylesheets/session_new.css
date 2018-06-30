@@ -1,0 +1,35 @@
+h2 {
+    color:white;
+    background-color:#7386D5;
+    font-family: 'Song Myung', serif;
+    font-size:15px;
+    height:10vh;
+    text-align:center;
+    padding-top:1.5vh;
+    width:30%;
+    margin:0px auto;
+
+}
+.blank {
+    height:25vh;
+}
+
+.login {
+    width:30%;
+    text-align:center;
+    border: 2px solid #7386D5;
+    margin:0px auto;
+    background-color:white;
+}
+
+.background {
+    background-image:url("foodtruck_background.jpeg");
+    background-color: #cccccc;
+    height:100vh;
+}
+.label2 {
+    margin-right: 10px;
+}
+ .label1 {
+    margin-right: 20px;
+}
