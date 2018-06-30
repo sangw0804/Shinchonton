@@ -22,55 +22,32 @@
     <div class="wrapper p-1">
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Bootstrap Sidebar</h3>
+                <h3><a href="/">FoodTruck</a></h3>
             </div>
     
             <ul class="list-unstyled components">
-                <p>Dummy Heading</p>
-                <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a href="#">Home 1</a>
-                        </li>
-                        <li>
-                            <a href="#">Home 2</a>
-                        </li>
-                        <li>
-                            <a href="#">Home 3</a>
-                        </li>
-                    </ul>
+                
+                <% if user_signed_in?%>
+                <li>
+                  <%= link_to "로그아웃", destroy_user_session_path, method: :delete %>
+                </li>
+                
+                <% else %>
+                <li>
+                    <%= link_to "로그인", new_user_session_path%>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <%= link_to "회원가입", new_user_registration_path %>
                 </li>
+              
+                <% end%>
+
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="#">Page 1</a>
-                        </li>
-                        <li>
-                            <a href="#">Page 2</a>
-                        </li>
-                        <li>
-                            <a href="#">Page 3</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">로그인</a>
-                </li>
-                <li>
-                    <a href="#">회원가입</a>
-                </li>
-                <li>
-                    <a href="#">등록하기</a>
-                </li>
-                <li>
-                       해시태그/키워드 검색 <input type="text" name="hashtags" placeholder="(,로 구분)">
-                    <input type='submit' value='검색'>
-                    <br>
+                    <%= form_tag search_post_path do %>
+                      <%= label_tag :q, "검색"%>
+                      <%= text_field_tag :q %>
+                      <%= submit_tag "찾기"%>
+                    <% end%>
                 </li>
             </ul>
         </nav>
@@ -78,40 +55,55 @@
     </div>
     
     <div class="wrapper2">
-            <div id="map"></div>
+            <div id="map" style="border-radius:10%" ></div>
     <script>
 // Initialize and add the map
 function initMap() {
   // The location of Uluru
-  var sinchonStation = {lat: 37.55528, lng: 126.93694};
+  var sinchonStation = {lat: 37.55628, lng: 126.93694};
   // The map, centered at Uluru
   var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 16, center: sinchonStation});
+      document.getElementById('map'), {zoom: 17, center: sinchonStation});
   // The marker, positioned at Uluru
+
   var markers = [];
 
   <% @posts.each do |post| %>
     var marker = new google.maps.Marker({
       position: {lat: <%= post.x %>, lng: <%= post.y %>},
       map: map,
-       title: "<%= post.title %>"
+      title: "<%= post.title %>",
+      icon: {url:"<% if user_signed_in? && current_user.id == post.user_id %><%= asset_path 'foodTruck3.png'%><% else%><%= asset_path 'foodTruck2.png'%><% end%>"}
     });
     marker.addListener('click', function () {
       console.log("hi");
       $.ajax({
-        url: "posts_ajax/"+<%= post.id %>
+        url: "/posts_ajax/"+<%= post.id %>
       });
     })
     // console.log(<%=post.x%>);
     marker.setMap(map);
   <% end%>
 
+  var beforeMarker;
   google.maps.event.addListener(map, 'click', function(event) {
-    console.log(""+event.latLng);       // 인포윈도우의 위치를 클릭한 곳으로 변경한다.
+    console.log("");
+    var contentString = "<div><a href='/posts/new/"+event.latLng.lat().toString().replace(".","a")+"/"+event.latLng.lng().toString().replace(".","a")+"'>여기에서 장사할래요!</a></div>";
+    var marker = new google.maps.Marker({
+      position: event.latLng,
+      map: map
+    });
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    console.log("zzz");
+
+    infowindow.open(map,marker);
+
   });
 
 }
-
+$()
     </script>
     <!--Load the API from the specified URL
     * The async attribute allows the browser to render the page while the API loads
